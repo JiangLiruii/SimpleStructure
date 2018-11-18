@@ -2,7 +2,7 @@ import { IDispatcher, IMediator, IRouter, IAppSettings, IControllerDetails } fro
 import { Mediator } from "./mediator";
 import { Dispatcher } from "./dispatcher";
 import { Router } from "./router";
-import { AppEvent } from ".";
+import { AppEvent } from "./app_event";
 
 export class App {
     private _dispatcher:IDispatcher;

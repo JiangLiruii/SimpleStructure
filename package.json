@@ -11,6 +11,7 @@
   "dependencies": {
     "@types/bootstrap": "^4.1.2",
     "@types/chai": "^4.1.7",
+    "@types/handlebars": "^4.0.39",
     "@types/highcharts": "^5.0.33",
     "@types/jquery": "^3.3.22",
     "@types/mocha": "^5.2.5",
