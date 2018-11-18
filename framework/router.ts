@@ -3,7 +3,7 @@ import { EventEmitter } from './event_emitter';
 import { Route } from './route';
 import { AppEvent } from './app_event';
 
-class Router extends EventEmitter implements IRouter {
+export class Router extends EventEmitter implements IRouter {
     private _defaultController:string;
     private _defaultAction:string;
 

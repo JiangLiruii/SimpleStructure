@@ -2,7 +2,7 @@ import { EventEmitter } from "./event_emitter";
 import { IDispatcher, IControllerDetails, IMediator, IEventEmitter, IRoute, IController } from "./interface";
 import { AppEvent } from "./app_event";
 
-export class Despatcher extends EventEmitter implements IDispatcher {
+export class Dispatcher extends EventEmitter implements IDispatcher {
     private _controllersHashMap:{};
     private _currentController:IController;
     private _currentControllerName:string;

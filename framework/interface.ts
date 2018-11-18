@@ -23,9 +23,9 @@ export interface IController {
 // 指明可用的程序设置
 export interface IAppSettings {
     isDebug:boolean;
-    defaultContrutctor:string;
+    defaultController:string;
     defaultAction:string;
-    controller:IControllerDetails[];
+    controllers:IControllerDetails[];
     onErrorHandler:(o:Object) => void;
 }
 
@@ -52,3 +52,14 @@ export interface IRoute {
 export interface IRouter {
     initialize():void;
 }
+
+export interface IModel extends IEventEmitter {
+    initialize():void;
+    dispose():void;
+}
+
+export interface IView extends IEventEmitter {
+    initialize():void;
+    dispose():void;
+}
+
