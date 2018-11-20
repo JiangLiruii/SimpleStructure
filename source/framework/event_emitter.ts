@@ -19,8 +19,7 @@ export class EventEmitter implements IEventEmitter {
         }
     }
 
-    public unsubscribeToEvents(events:IAppEvent[]) {
-        this._events = events;
+    public unsubscribeToEvents() {
         for (const event of this._events) {
             this._mediator.unsubscribe(event);
         }

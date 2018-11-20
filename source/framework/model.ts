@@ -46,12 +46,12 @@ export class Model extends EventEmitter implements IModel {
     protected requestAsync(method:string, dataType:string, data) {
         return new Promise((resolve, reject) => {
             $.ajax({
-                method,
-                url: this._serviceUrl,
                 data:data || {},
                 dataType,
-                success: (response) => resolve(response),
                 error: (...args) => reject(args),
+                method,
+                success: (response) => resolve(response),
+                url: this._serviceUrl,
             });
         });
     }

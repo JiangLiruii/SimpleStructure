@@ -25,8 +25,9 @@ export function ViewSetting(templateUrl:string, container:string) {
 }
 
 export class View extends EventEmitter implements IView {
+    // protected for inheritate
+    protected _container:string;
     private _templateUrl:string;
-    private _container:string;
     private _templateDelegate:Handlebars.TemplateDelegate;
 
     constructor(mediator:IMediator) {
