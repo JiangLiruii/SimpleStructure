@@ -1,18 +1,20 @@
 import * as Frameworks from '../framework';
 import { IAppSettings } from '../framework/interface';
-
+import { MarketController } from './controller/market_controller';
+import { SymbolController } from './controller/symbol';
 const appSetting:IAppSettings = {
-    isDebug: true,
-    defaultController: 'market',
-    defaultAction: 'nasdaq',
+    // NOTE 设置中最重要的字段
     controllers: [
-        {controllerName:'market', controller:},
-        {controllerName: 'symbol', controller:}
+        {controllerName: 'market', controller: MarketController},
+        {controllerName: 'symbol', controller: SymbolController},
     ],
+    defaultAction: 'nasdaq',
+    defaultController: 'market',
+    isDebug: true,
     onErrorHandler: (e) => {
         console.log(e.toString());
-    }
-}
+    },
+};
 
 const app = new Frameworks.App(appSetting);
 app.initialize();
