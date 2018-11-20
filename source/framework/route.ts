@@ -11,8 +11,8 @@ export class Route implements IRoute {
         this.args = args;
     }
 
-    serialize():string {
-        const svar = this.args.map(a => a.toString()).join('/')
-        return `${this.controllerName}/${this.actionName}/${svar}` 
+    public serialize():string {
+        const svar = this.args.map((a) => a.toString()).join('/');
+        return `${this.controllerName}/${this.actionName}/${svar}`;
     }
 }

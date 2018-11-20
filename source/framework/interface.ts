@@ -1,12 +1,12 @@
 export interface IAppEvent {
     topic:string;
     data:any;
-    handler:(e:any, data?:any) => void
+    handler:(e:any, data?:any) => void;
 }
 
 export interface IMediator {
     publish(e:IAppEvent):void;
-    subscribe(e:IAppEvent):void
+    subscribe(e:IAppEvent):void;
     unsubscribe(e:IAppEvent):void;
 }
 
@@ -26,7 +26,7 @@ export interface IAppSettings {
     defaultController:string;
     defaultAction:string;
     controllers:IControllerDetails[];
-    onErrorHandler:(o:Object) => void;
+    onErrorHandler:(o:object) => void;
 }
 
 // 事件发射, 每个组件都需要依赖这个类
@@ -62,4 +62,3 @@ export interface IView extends IEventEmitter {
     initialize():void;
     dispose():void;
 }
-

@@ -1,0 +1,24 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
+    "rules": {
+        "no-console": false,
+        "only-arrow-functions": false,
+        "whitespace":[false, "check-type"],
+        "typedef-whitespace":[true, {
+            "parameter": "nospace"
+        },{
+            "parameter": "nospace"
+        }],
+        "no-bitwise":false,
+        "quotemark":false,
+        "no-reference":false,
+        "no-use-before-declare":false,
+        "variable-name":false,
+        "one-variable-per-declaration":false
+    },
+    "rulesDirectory": []
+}

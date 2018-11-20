@@ -1,6 +1,6 @@
-import { EventEmitter } from "./event_emitter";
-import { IDispatcher, IControllerDetails, IMediator, IEventEmitter, IRoute, IController } from "./interface";
 import { AppEvent } from "./app_event";
+import { EventEmitter } from "./event_emitter";
+import { IController, IControllerDetails, IDispatcher, IEventEmitter, IMediator, IRoute } from "./interface";
 
 export class Dispatcher extends EventEmitter implements IDispatcher {
     private _controllersHashMap:{};
@@ -13,36 +13,37 @@ export class Dispatcher extends EventEmitter implements IDispatcher {
         this._currentController = null;
         this._currentControllerName = null;
     }
-    
+
     // 监听app.dispatch
     public initialize() {
         this.subscribeToEvents([
             new AppEvent(
                 'app.dispatch',
                 null,
-                (e:any, data?:any) => this.dispatch(data)
-            )
-            ])
+                (e:any, data?:any) => this.dispatch(data),
+            ),
+            ]);
     }
 
-    
     // 获取controller的hash表, controller的name为键, controller.controller为值
-    private getController(controllers:IControllerDetails[]):Object {
-        let hashMap:{};
+    private getController(controllers:IControllerDetails[]):object {
+        const hashMap = {};
         const l = controllers.length;
         if (l <= 0) {
-            this.triggerEvent(new AppEvent("app.error", "Cannot create an application without at least one controller", null))
+            this.triggerEvent(new AppEvent(
+                "app.error", "Cannot create an application without at least one controller"
+                , null));
         }
         for (let i = 0; i < l; i ++) {
-            const controller = controllers[i]
-            const name = controller.controllerName
+            const controller = controllers[i];
+            const name = controller.controllerName;
             const hashMapEntry = hashMap[name];
             if (hashMapEntry !== null && hashMapEntry !== undefined) {
                 this.triggerEvent(new AppEvent(
                     'app.error',
                     'Two controllers cannot have same name',
-                    null
-                ))
+                    null,
+                ));
             }
             hashMap[name] = controller.controller;
         }
@@ -51,13 +52,13 @@ export class Dispatcher extends EventEmitter implements IDispatcher {
 
     // 创建和销毁controller
     private dispatch(route:IRoute) {
-        const Controller = this._controllersHashMap[route.controllerName]
+        const Controller = this._controllersHashMap[route.controllerName];
         if (Controller === null || Controller === undefined) {
             this.triggerEvent(new AppEvent(
                 'app.error',
                 'Controller not Found',
-                null
-            ))
+                null,
+            ));
         } else {
             // 创建一个controller实例
             const controller:IController = new Controller(this._mediator);
@@ -66,14 +67,14 @@ export class Dispatcher extends EventEmitter implements IDispatcher {
                 this.triggerEvent(new AppEvent(
                     'app.error',
                     `Action ${route.actionName} not found in ${route.controllerName}`,
-                    null
+                    null,
                 ));
             } else {
                 if (this._currentController === null) {
                     // 初始化_currentController
                     this._currentController = controller;
                     this._currentControllerName = route.controllerName;
-                    this._currentController.initialize;
+                    this._currentController.initialize();
                 } else {
                     // 如果之前的controller不再需要
                     if (this._currentControllerName !== route.controllerName) {
@@ -87,8 +88,8 @@ export class Dispatcher extends EventEmitter implements IDispatcher {
                 this.triggerEvent(new AppEvent(
                     `app.controller.${this._currentControllerName}.${route.actionName}`,
                     route.args,
-                    null
-                ))
+                    null,
+                ));
             }
         }
     }

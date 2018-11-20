@@ -1,5 +1,5 @@
-import { IMediator, IAppEvent } from "./interface";
-import $ from 'jquery';
+import * as $ from 'jquery';
+import { IAppEvent, IMediator } from "./interface";
 export class Mediator implements IMediator {
     private _isDebug;
     private _$:JQuery;
@@ -18,7 +18,7 @@ export class Mediator implements IMediator {
         if (this._isDebug) {
             console.log(new Date().getTime(), 'PUBLISH', e.topic, e.data);
         }
-        this._$.trigger(e.topic, e.data)
+        this._$.trigger(e.topic, e.data);
     }
     /**
      * 监听信息
@@ -42,4 +42,3 @@ export class Mediator implements IMediator {
         this._$.off(e.topic);
     }
 }
-

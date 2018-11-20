@@ -1,4 +1,4 @@
-import { IEventEmitter, IMediator, IAppEvent } from "./interface";
+import { IAppEvent, IEventEmitter, IMediator } from "./interface";
 
 export class EventEmitter implements IEventEmitter {
     protected _mediator:IMediator;
@@ -11,18 +11,18 @@ export class EventEmitter implements IEventEmitter {
     public triggerEvent(event:IAppEvent) {
         this._mediator.publish(event);
     }
-    
-    public subscribeToEvents(events:IAppEvent[]){
+
+    public subscribeToEvents(events:IAppEvent[]) {
         this._events = events;
-        for (let i = 0; i < this._events.length; i++) {
-            this._mediator.subscribe(this._events[i]);
+        for (const event of this._events) {
+            this._mediator.subscribe(event);
         }
     }
 
     public unsubscribeToEvents(events:IAppEvent[]) {
         this._events = events;
-        for (let i = 0; i < this._events.length; i++) {
-            this._mediator.unsubscribe(this._events[i])
+        for (const event of this._events) {
+            this._mediator.unsubscribe(event);
         }
     }
 }

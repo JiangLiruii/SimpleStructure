@@ -1,7 +1,7 @@
-import { IRouter, IMediator, IRoute } from './interface'
-import { EventEmitter } from './event_emitter';
-import { Route } from './route';
 import { AppEvent } from './app_event';
+import { EventEmitter } from './event_emitter';
+import { IMediator, IRoute, IRouter } from './interface';
+import { Route } from './route';
 
 export class Router extends EventEmitter implements IRouter {
     private _defaultController:string;
@@ -15,34 +15,34 @@ export class Router extends EventEmitter implements IRouter {
 
     public initialize() {
         $(window).on('hashchange', () => {
-            var r = this.getRoute();
+            const r = this.getRoute();
             this.onRouteChange(r);
 
-        })
+        });
         this.subscribeToEvents([new AppEvent(
             'app.initialize',
             null,
             (e:any, data?:Route) => {
-                this.onRouteChange(data)
-            }
+                this.onRouteChange(data);
+            },
         )]);
     }
 
     private getRoute() {
-        let h = window.location.hash
-        return this.parseRoute(h)
+        const h = window.location.hash;
+        return this.parseRoute(h);
     }
 
     private parseRoute(hash:string) {
-        let comp:string[], controller, action, args, i;
+        let comp:string[], controller, action, args;
         if (hash[hash.length - 1] === '/') {
-            hash = hash.substring(0, hash.length - 1)
+            hash = hash.substring(0, hash.length - 1);
         }
         comp = hash.replace('#', '').split('/');
-        controller = comp[0]
-        action = comp[1]
-        args = comp.slice(2, comp.length - 1)
-        return new Route(controller, action, args)
+        controller = comp[0];
+        action = comp[1];
+        args = comp.slice(2, comp.length - 1);
+        return new Route(controller, action, args);
     }
 
     // 通过controller将控制权交给dispatcher
@@ -51,6 +51,6 @@ export class Router extends EventEmitter implements IRouter {
             'app.dispatch',
             route,
             null,
-        ))
+        ));
     }
 }
