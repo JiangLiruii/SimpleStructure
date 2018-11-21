@@ -8,6 +8,7 @@
         "noLib": false,
         "preserveConstEnums": true,
         "suppressImplicitAnyIndexErrors": true,
+        "experimentalDecorators": true,
         "types": [
             "datatables.net"
         ]

@@ -1,6 +1,7 @@
-import { AppEvent, Model } from "../../framework";
+import { AppEvent, Model, ModelSetting } from "../../framework";
 import { IMediator, IModel } from "../../framework/interface";
 
+@ModelSetting('../../../data/nasdaq.json')
 export class NasdaqModel extends Model implements IModel {
 
     constructor(mediator:IMediator) {
