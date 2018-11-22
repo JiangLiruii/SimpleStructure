@@ -31,12 +31,15 @@ export class MarketView extends View implements IView {
     // SECTION  初始化DOM事件
     protected bindDomEvents(model:any) {
         const scope = this._container;
+        // 处理点击事件
         $('.getQuote').on('click', scope, (e) => {
             const symbol = $(e.currentTarget).data('symbol');
+            // 让列表变得可排序和可搜索
             this.getStockQuote(symbol);
         });
         $(scope).find('table').DataTable();
     }
+    // 销毁dom监听器
     protected unbindDomEvents() {
         const scope = this._container;
         $('.getQuote').off('click', scope);
@@ -45,7 +48,7 @@ export class MarketView extends View implements IView {
     }
 
     private getStockQuote(symbol:string) {
-        // 使用路由事件导航
+        // 使用路由事件导航, 将路由切换为symbol
         this.triggerEvent(new AppEvent('app.route', new Route('symbol', 'quote', [symbol]), null));
     }
 }
