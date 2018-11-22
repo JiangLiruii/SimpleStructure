@@ -51,6 +51,7 @@ export class Model extends EventEmitter implements IModel {
                 error: (...args) => reject(args),
                 method,
                 success: (response) => resolve(response),
+                // 此处的url为装饰器注入的
                 url: this._serviceUrl,
             });
         });
