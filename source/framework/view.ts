@@ -12,10 +12,13 @@ export function ViewSetting(templateUrl:string, container:string) {
                 return constructor.apply(this,args);
             };
             c.prototype = constructor.prototype;
-            return new c();
+            const instance = new c();
+            instance._container = container;
+            instance._templateUrl = templateUrl;
+            return instance;
         }
 
-        const f = function(...args) {
+        const f : any = function(...args) {
             return construct(origin, args);
         };
 
