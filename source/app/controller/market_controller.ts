@@ -4,7 +4,7 @@ import { NasdaqModel } from "../models/nasdaq_model";
 import { NyseModel } from "../models/nyse_model";
 import { MarketView } from "../views/market_view";
 
-class MarketController extends Controller implements IController {
+export class MarketController extends Controller implements IController {
     // NOTE 将view和model设置为controller的属性
     private _markeView:IView;
     private _nasdaqModel:IModel;
