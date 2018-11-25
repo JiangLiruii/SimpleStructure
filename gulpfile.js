@@ -30,14 +30,14 @@ gulp.task('lint', () => {
 
 // SECTION ts to js
 const tsProject = tsc.createProject({
-    target:'es5',
+    target:'es2015',
     module:'commonjs',
+    declarationFiles : false,
     experimentalDecorators:true,
-    typescript:typescript
 })
 gulp.task('build-source', () => {
     return gulp.src('./source/**/**.ts')
-    .pipe(tsc(tsProject))
+    .pipe(tsProject())
     .js.pipe(gulp.dest('./build/source'))
 })
 
@@ -49,7 +49,16 @@ gulp.task('build', (cb) => {
 // SECTION bundle
 
 gulp.task('bundle-source', () => {
-
+    var b = browserify({
+        standalone : 'TsStock',
+        entries: __dirname + "/build/source/app/main.js",
+        debug: true
+      });
+    
+      return b.bundle()
+        .pipe(source("bundle.js"))
+        .pipe(buffer())
+        .pipe(gulp.dest(__dirname + "/bundled/source/"));
 })
 
 // NOTE TEST
@@ -61,8 +70,68 @@ gulp.task('run-unit-test', (cb) => {
     }, cb)
 })
 
+// 与karma不同的是能更好的模拟用户的行为
+gulp.task('run-e2e-test', () => {
+    return gulp.src('')
+    .pipe(nightwatch({
+        configFile: 'nightwatch.json',
+    }))
+})
+
 // NOTE BAKE
 
-// NOTE SERVE
+// 压缩代码
+gulp.task('compress', () => {
+    return gulp.src('bundled/source/bundle.js')
+    .pipe(uglify({preserveComments: false}))
+    .pipe(gulp.dest('dist/'))
+})
+
+// 增加头部的版权信息等
+gulp.task('header', () => {
+    var banner = ["/**",
+    " * <%= pkg.name %> v.<%= pkg.version %> - <%= pkg.description %>",
+    " * Copyright (c) 2015 <%= pkg.author %>",
+    " * <%= pkg.license %> inversify.io/LICENSE",
+    " * <%= pkg.homepage %>",
+    " */",
+    ""].join("\n");
+
+  return gulp.src(__dirname + "/dist/inversify.js")
+             .pipe(header(banner, { pkg : pkg } ))
+             .pipe(gulp.dest(__dirname + "/dist/"));
+})
+
+// NOTE SERVE for E2E test
+
+gulp.task('serve', (cb) => {
+    browserSync({
+        port: 8080,
+        server: {
+            baseDir: __dirname + './'
+        }
+    });
+    gulp.watch([
+        __dirname + "/source/**/*.ts",
+        __dirname + "/test/**/*.ts",
+        __dirname + "/css/**/*.css",
+        __dirname + "/img/**/*.css",
+        __dirname + "/index.html"
+    ], reload,cb)
+})
 
 // NOTE DEFAULT
+
+gulp.task("default", function () {
+    runSequence(
+      "lint",
+      "build-source",
+      "build-test",
+      "bundle-source",
+      "bundle-test",
+      "karma",
+      "cover",
+      "compress",
+      "header"
+      );
+  });
