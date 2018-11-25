@@ -22,11 +22,11 @@ export interface IController {
 
 // 指明可用的程序设置
 export interface IAppSettings {
-    isDebug:boolean;
+    isDebug?:boolean;
     defaultController:string;
     defaultAction:string;
     controllers:IControllerDetails[];
-    onErrorHandler:(o:object) => void;
+    onErrorHandler?:(o:object) => void;
 }
 
 // 事件发射, 每个组件都需要依赖这个类

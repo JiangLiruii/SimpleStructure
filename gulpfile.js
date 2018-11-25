@@ -65,7 +65,7 @@ gulp.task('bundle-source', () => {
 
 gulp.task('run-unit-test', (cb) => {
     karma.start({
-        configFile: 'karma.conf.js',
+        configFile: __dirname + '\\karma.conf.js',
         singleRun: true,
     }, cb)
 })

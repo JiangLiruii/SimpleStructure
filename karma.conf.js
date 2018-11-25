@@ -1,4 +1,4 @@
-export default function(config) {
+module.exports = function(config) {
     'use strict';
 
     config.set({
@@ -37,7 +37,7 @@ export default function(config) {
                 ui: 'bdd'
             }
         },
-        port: 9876,
+        port: 4444,
         color: true,
         autoWatch: false,
         logLevel: config.DEBUG
