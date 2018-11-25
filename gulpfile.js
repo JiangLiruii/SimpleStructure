@@ -54,6 +54,13 @@ gulp.task('bundle-source', () => {
 
 // NOTE TEST
 
+gulp.task('run-unit-test', (cb) => {
+    karma.start({
+        configFile: 'karma.conf.js',
+        singleRun: true,
+    }, cb)
+})
+
 // NOTE BAKE
 
 // NOTE SERVE
