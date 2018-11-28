@@ -39,8 +39,8 @@ export class Router extends EventEmitter implements IRouter {
             hash = hash.substring(0, hash.length - 1);
         }
         comp = hash.replace('#', '').split('/');
-        controller = comp[0];
-        action = comp[1];
+        controller = comp[0] || this._defaultController;
+        action = comp[1] || this._defaultAction;
         args = comp.slice(2, comp.length - 1);
         return new Route(controller, action, args);
     }

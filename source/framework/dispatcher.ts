@@ -1,6 +1,6 @@
 import { AppEvent } from "./app_event";
 import { EventEmitter } from "./event_emitter";
-import { IController, IControllerDetails, IDispatcher, IEventEmitter, IMediator, IRoute } from "./interface";
+import { IController, IControllerDetails, IDispatcher, IMediator, IRoute } from "./interface";
 
 export class Dispatcher extends EventEmitter implements IDispatcher {
     private _controllersHashMap:{};
@@ -22,7 +22,7 @@ export class Dispatcher extends EventEmitter implements IDispatcher {
                 null,
                 (e:any, data?:any) => this.dispatch(data),
             ),
-            ]);
+        ]);
     }
 
     // 获取controller的hash表, controller的name为键, controller.controller为值

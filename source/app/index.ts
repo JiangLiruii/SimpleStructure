@@ -1,7 +1,7 @@
 import * as Frameworks from '../framework';
 import { IAppSettings } from '../framework/interface';
 import { MarketController } from './controller/market_controller';
-import { SymbolController } from './controller/symbol';
+import { SymbolController } from './controller/symbol_controller';
 const appSetting:IAppSettings = {
     // NOTE 设置中最重要的字段
     controllers: [
