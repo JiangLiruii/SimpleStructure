@@ -17,7 +17,7 @@
 - Store用来储存和操作数据, 类似于MVC中的model, 每当数据被修改时, 会传递给view
 - View负责将数据渲染成HTML并处理事件(Action). 如果一个事件需要修改一些数据, View会将这个Action送入到Dispatch中, 而不是直接对model进行修改. 这是与双向数据绑定的区分点.
 
-## 主要结构:
+## Framework的主要结构:
 
 ### 最基本的使 [interface](./source/framework/interface.ts), 它定义了整个框架的接口类型. 当然是写到某一接口时才会去往里面添加内容, 一开始谁也无法把将来要用到的接口都给写出来.
 
@@ -28,6 +28,42 @@
 ### 在完成mediator和app_event之后可以顺理成章的写出 [app_event](./source/framework/app_event.ts) 了, 具有四个公有实例属性, `guid, topic, data, handler` 即 `唯一标识符, 事件名称, 事件数据, 事件处理函数`这4类. 这里产生guid的方法为使用随机的16进制32位也就是2进制128位的方法.`Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)`.
 
 ### 下面根据MVC的结构进行逐一分析.
-#### [Model](./source/framework/model.ts), model 的数据来源于网络请求或本地文件获取. 所以需要设置url, 这里将url抽离成一个类装饰器 ModelSetting, 然后注入_url属性, 剩下的就是请求 requestAsync 的方法, 使用的ajax, 可以设置多钟不同的请求方式(get, post, delete, get等). 该类为抽象类, initialize和dispose不应该在这里实现.
+#### [Model](./source/framework/model.ts), model 的数据来源于网络请求或本地文件获取. 
 
-#### [View](./source/framework/view.ts), view 需要获取一个对应的模板(template), 与Model一样, 采用的是装饰器注入的方式. 使用了 [HandleBars](http://handlebarsjs.com/) 模板引擎, 这里主要是 renderAsync 的实现方式, 从获取template数据, 到渲染出一个html, 再将对应的html放入container中.其余的initialize, dispose, bindDomEvent, unBindDomEvent 都不应该在这里完成.
+- 设置url, 这里将url抽离成一个类装饰器 ModelSetting, 然后注入_url属性
+- 请求 requestAsync 的方法, 使用的ajax, 可以设置多钟不同的请求方式(get, post, delete, get等).
+- 该类为抽象类, initialize和dispose不应该在这里实现.
+
+#### [View](./source/framework/view.ts), view 需要获取一个对应的模板(template), 与Model一样, 采用的是装饰器注入的方式. 使用了 [HandleBars](http://handlebarsjs.com/) 模板引擎, 这里主要是 renderAsync 的实现方式
+
+- 获取template数据
+- 渲染出一个html
+- 将对应的html放入container中.
+- 其余的initialize, dispose, bindDomEvent, unBindDomEvent 都不应该在这个抽象类中完成.
+
+#### [Controller](./source/framework/controller.ts), controller是需要监听model的变化, 并且将这个变化处理后交给view进行视图的更新渲染.但是同样的, 在framework种应该是抽象的, 只有initialize和dispose两个方法, 每个model都需要有一个controller.
+
+#### [Dispatcher](./source/framework/dispatcher.ts), dispatcher是用于监听'app.dispatch'事件, 如果有更新的话, 会从controller的hash表中找到对应的controller, 有三种情况,
+
+- 1 没有对应的controller
+- 2 有对应的controller没有对应的action
+- 3 有对应的controller和对应的action
+    - 3.1 当前没有cntroller --> 新建controller
+    - 3.2 当前controller与更新的controller一致 --> 不需要对controller左任何操作
+    - 3.3 当前有controller但与更新的controller不一致 --> 需要dispose原有的, 再initialize新的.
+
+#### 最后来看看路由 [Router](./source/framework/router.ts) 它是由[route](./source/framework/route.ts)组成, route定义一个路由应该长什么样子, 包含了actionName, controllerName, 并且有一个序列化导航地址的方法, 以actionName, controllerName和其余参数为唯一标识. router定义路由的行为, 监听路由变化, 在变化时
+
+- 根据路由实例化route, 
+- 将route传入dispatcher中, 把控制权交给对应的controller
+
+## App主要结构
+
+### app文件夹中是根据已有的抽象类来进行实例化并且将抽象中的功能具体化.主要就是MVC这三个, template可以看成view的一部分.
+
+#### controller中定义了两个controller
+
+- [market_controller](./source/app/controller/market_controller.ts)
+- [symbol_controller](./source/app/controller/symbol_controller.ts)
+
+每个controller都具象化了initialize和dispose这两个方法, 监听不同的事件来响应不同的view, 且都具有自有的model和view属性
