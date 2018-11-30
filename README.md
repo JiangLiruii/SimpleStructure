@@ -63,7 +63,26 @@
 
 #### controller中定义了两个controller
 
-- [market_controller](./source/app/controller/market_controller.ts)
-- [symbol_controller](./source/app/controller/symbol_controller.ts)
+- [MarketController](./source/app/controller/market_controller.ts)
+- [SymbolController](./source/app/controller/symbol_controller.ts)
 
-每个controller都具象化了initialize和dispose这两个方法, 监听不同的事件来响应不同的view, 且都具有自有的model和view属性
+每个controller都具象化了initialize和dispose这两个方法, 监听不同的事件控制model(进而生成不同的view), 且都具有自有的model和view属性
+
+#### model中定义了四个model, 
+
+- [NasdaqModel](./source/app/models/nasdaq_model.ts) --> 响应MarketController
+- [NyseModel](./source/app/models/nyse_model.ts) --> 响应MarketController
+- [ChartModel](./source/app/models/chart_model.ts) --> 响应SymbolController(initialize中的`app.model.chart.change`触发)
+- [QuoteModel](./source/app/models/quote_model.ts) --> 响应SymbolController
+
+每个model都具象化了initialize和dispose这两个方法, 监听不同事件控制view的render事件生成新的view, 且通过ModelSetting注入`_serviceUrl`属性(该属性再getAsync的时候使用).
+
+#### template中定义了两个模板, 对应 [market](./source/app/template/market.hbs) 和 [symbol](./source/app/template/symbol.hbs)
+
+#### views中定义了三种视图
+
+- [MarketView](./source/app/views/market_view.ts) --> 对应trigger view类事件的model(NasdaqModel, NyseModel)
+- [SymbolView](./source/app/views/symbol_view.ts) --> 对应trigger symbol类事件的model(QuoteModel)
+- [ChartView](./source/app/views/chart_view.ts) --> 对应trigger chart类事件的model(ChartModel)
+
+
